@@ -10,6 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "apollo-server": "^2.9.16",
+    "dotenv": "^8.2.0",
+    "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.1.1",
     "type-graphql": "^0.17.6",
