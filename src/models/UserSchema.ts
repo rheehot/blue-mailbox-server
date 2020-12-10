@@ -6,24 +6,31 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
 @Entity()
 @ObjectType() // 읽는타입
-export class Test extends BaseEntity {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn() 
     @Field()
-    test_idx: number;
+    user_idx: number;
 
     @Column()
     @Field()
-    test_name: string;
+    kakao_id: string;
+
+    @Column()
+    @Field()
+    access_token: string;
 
 }
 
 
 @InputType() // create, update, delete 하는 타입
-export class InputTest{
+export class InputUser{
     @Field()
-    test_idx: number;
+    user_idx: number;
 
     @Field()
-    test_name: string;
+    kakao_id: string;
+
+    @Field()
+    access_token: string;
 }
