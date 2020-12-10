@@ -18,10 +18,17 @@ export class User extends BaseEntity {
 
     @Column()
     @Field()
+    user_name: string;
+
+    @Column()
+    @Field()
+    user_email: string;
+
+    @Column()
+    @Field()
     access_token: string;
 
 }
-
 
 @InputType() // create, update, delete 하는 타입
 export class InputUser{
