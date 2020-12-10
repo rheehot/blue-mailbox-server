@@ -1,3 +1,4 @@
+import { Token } from "../models/TokenSchema";
 import { User } from "../models/UserSchema";
 const { v4: uuidv4 } = require('uuid');
 const unirest = require('unirest');
@@ -37,18 +38,27 @@ export function getKakaoUserInfor(access_token: string): Promise<any> {
         }
       }
     )
-      console.log(user_data)
+    
     // 유저가 없을 시 생성해주자
     if(!user) {
       let newUser = await User.insert(user_data);
-      console.log(newUser)
+      const data = newUser.identifiers[0]
+      return data;
     } else {
       // 기존유저는 토큰 값을 업뎃시켜줌
       await User.update(kakao_access_token, { kakao_id: kakao_id });
     }
+
+    return user;
   }
 
-  export async function generateToken() {
+  export async function generateToken(token_data: any) {
     const token = uuidv4().replace(/-/g, '');
+
+    const data = {
+      user_idx: token_data.user_idx,
+      token
+    }
+    await Token.insert(data)
     return token;
   }

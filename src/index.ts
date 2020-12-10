@@ -1,12 +1,47 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { ApolloServer } from "apollo-server";
-import { buildSchema } from "type-graphql";
-
+import { AuthChecker, buildSchema } from "type-graphql";
+import { Context } from 'vm';
 import { MainResolver } from "./resolvers/resolver";
 import { getConnection } from "typeorm";
 import { config } from "./db/config";
-     
+import { Token } from "./models/TokenSchema";
+import { User } from "./models/UserSchema";
+
+
+export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
+  let headers = context.req.headers;
+  let token = headers.token;
+
+  const _token: any = await Token.findOne(
+    {
+      where: {
+        token
+      }
+    }
+  )
+
+  if(!_token){
+    throw "토근 없음! 접근 불가"
+  }
+
+  // 유저 찾기
+  const user = await User.findOne(
+    {
+      where: {
+        user_idx: _token.user_idx
+      }
+    }
+  )
+
+  if(user){
+    context.user = user;
+  }
+
+  return true; // or false if access is denied
+};
+
 
 async function main() {
 
@@ -14,12 +49,21 @@ async function main() {
   await createConnection(_config);  // 디비 연결
 
   getConnection();
+  
 
   try{
     const schema = await buildSchema({ // 스키마 빌드
-      resolvers: [MainResolver], 
+      resolvers: [MainResolver],
+      authChecker: customAuthChecker 
     });
-    const server = new ApolloServer({ schema }); // 아폴로 서버
+    const server = new ApolloServer({ schema,
+      context: ({ req }) => {
+        const context = {
+          req,
+        };
+        return context;
+      },
+     }); // 아폴로 서버
     await server.listen(4000); // 서버 주소
     console.log("✅ Server has started!");
   }catch(err){
