@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { User } from "../models/UserSchema";
-import { getKakaoUserInfor, kakaoLogin } from '../services/utils'
+import { getKakaoUserInfor, kakaoLogin, generateToken } from '../services/utils'
 
 // resolver는 직접적으로 스키마 파일을 불러와 데이터를 조작하는 파일입니다.
 // find() 이런 문법을 통해서 스키마 디비를 조회, 생성합니다.
@@ -36,16 +36,15 @@ export class MainResolver {
     @Arg('social_access_token', { nullable: false }) social_access_token: string,
   ) {
     try {
-      const result = getKakaoUserInfor(social_access_token)
+      const result = await getKakaoUserInfor(social_access_token);
       if(!result){
         throw "로그인 불가?"
       }
-      const user:any = kakaoLogin(social_id, social_access_token)
-      let tokenData = {
-        user_idx: user.user_idx
-      };
+      const user:any = kakaoLogin(social_id, social_access_token, result.properties)
 
-      return result
+      const token = await generateToken();
+      console.log(token)
+      return token;
     } catch (e) {
       console.error('login social error', e);
     }
