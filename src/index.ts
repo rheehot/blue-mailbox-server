@@ -23,7 +23,7 @@ export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
   )
 
   if(!_token){
-    throw "토근 없음! 접근 불가"
+    return true;
   }
 
   // 유저 찾기

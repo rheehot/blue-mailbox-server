@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Arg, Ctx, Authorized } from "type-graphql";
 import { User } from "../models/UserSchema";
 import { getKakaoUserInfor, kakaoLogin, generateToken } from '../services/utils'
 import { Context } from 'vm';
+import { Card, HomeCardData } from "../models/CardSchema";
 // resolver는 직접적으로 스키마 파일을 불러와 데이터를 조작하는 파일입니다.
 // find() 이런 문법을 통해서 스키마 디비를 조회, 생성합니다.
 
@@ -69,6 +70,55 @@ export class MainResolver {
         }
       }
     )
+  }
+
+  @Query(() => HomeCardData)
+  async select_main(
+  ){
+    try{
+      const main_img = await Card.findOne(
+        {
+          where: {
+            card_main: true
+          }
+        }
+      )
+  
+      const card_list_pop = await Card.find(
+        {
+          where: {
+            card_main: false,
+          },
+          skip: 0,
+          take: 4,
+          order: {
+            card_idx: 'ASC'
+          }
+        }
+      )
+
+      const card_list_christmas = await Card.find(
+        {
+          where: {
+            card_main: false,
+          },
+          skip: 0,
+          take: 4,
+          order: {
+            card_idx: 'DESC'
+          }
+        }
+      )
+  
+      return {
+        main_img,
+        card_list_pop,
+        card_list_christmas
+      }
+    }catch(err){
+      console.log(err)
+    }
+
   }
 
 }

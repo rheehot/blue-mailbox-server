@@ -28,6 +28,10 @@ export class Card extends BaseEntity {
     @Field()
     card_describe: string;
 
+    @Column()
+    @Field()
+    card_main: boolean;
+
 }
 
 
@@ -47,4 +51,17 @@ export class InputCard{
 
     @Field()
     card_describe: string;
+}
+
+
+@ObjectType()
+export class HomeCardData{
+    @Field(type  => Card)
+    main_img: Card;
+
+    @Field(type => [Card])
+    card_list_pop: [Card];
+
+    @Field(type => [Card])
+    card_list_christmas: [Card];
 }
