@@ -3,6 +3,7 @@ import { User } from "../models/UserSchema";
 import { getKakaoUserInfor, kakaoLogin, generateToken } from '../services/utils'
 import { Context } from 'vm';
 import { Card, HomeCardData } from "../models/CardSchema";
+import { Like } from "typeorm";
 // resolver는 직접적으로 스키마 파일을 불러와 데이터를 조작하는 파일입니다.
 // find() 이런 문법을 통해서 스키마 디비를 조회, 생성합니다.
 
@@ -119,6 +120,41 @@ export class MainResolver {
       console.log(err)
     }
 
+  }
+
+  @Query(() => Card)
+  async card_view_info(
+    @Arg('card_idx', { nullable: false }) card_idx: number,
+  ){
+    console.log(card_idx)
+    try{
+      return await Card.findOne(
+        {
+          where: {
+            card_idx: card_idx
+          }
+        }
+      )
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  @Query(() => [Card])
+  async card_search(
+    @Arg('card_keyword', { nullable: false }) card_keyword: string,
+  ){
+    try{
+      return await Card.find(
+        {
+          where: {
+            card_keyword: Like(`%${card_keyword}%`)
+          }
+        }
+      )
+    }catch(err){
+      console.log(err)
+    }
   }
 
 }
