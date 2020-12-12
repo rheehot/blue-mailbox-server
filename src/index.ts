@@ -26,6 +26,8 @@ export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
     return true;
   }
 
+  console.log("token -> ",_token)
+
   // 유저 찾기
   const user = await User.findOne(
     {
@@ -38,6 +40,8 @@ export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
   if(user){
     context.user = user;
   }
+
+  console.log('dd', context.user)
 
   return true; // or false if access is denied
 };

@@ -1,5 +1,6 @@
 import { Field, InputType, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany } from "typeorm";
+import { WriteCard } from "./WriteCardSchema";
 
 // 스키마 파일 
 // 디비에 있는 테이블과 컬럼들
@@ -31,6 +32,9 @@ export class Card extends BaseEntity {
     @Column()
     @Field()
     card_main: boolean;
+    
+    @ManyToMany(type => WriteCard, cards => cards.card_idx)
+    cards: WriteCard[];
 
 }
 
