@@ -46,7 +46,17 @@ export function getKakaoUserInfor(access_token: string): Promise<any> {
       return data;
     } else {
       // 기존유저는 토큰 값을 업뎃시켜줌
-      await User.update(kakao_access_token, { kakao_id: kakao_id });
+      const find: any = await User.findOne(
+        { kakao_id: kakao_id }
+      )
+
+      const result = await user.save({
+        ...find, // existing fields
+        kakao_access_token // updated fields
+      });
+
+      console.log(result)
+      // await User.update(kakao_access_token, );
     }
 
     return user;

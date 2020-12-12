@@ -2,8 +2,11 @@ import { Resolver, Query, Mutation, Arg, Ctx, Authorized } from "type-graphql";
 import { User } from "../models/UserSchema";
 import { getKakaoUserInfor, kakaoLogin, generateToken } from '../services/utils'
 import { Context } from 'vm';
-import { Card, HomeCardData } from "../models/CardSchema";
+import { Card, HomeCardData, InputCard } from "../models/CardSchema";
 import { Like } from "typeorm";
+import { InputWriteCard, MailboxReturn, WriteCard } from "../models/WriteCardSchema";
+import { getManager } from 'typeorm';
+
 // resolver는 직접적으로 스키마 파일을 불러와 데이터를 조작하는 파일입니다.
 // find() 이런 문법을 통해서 스키마 디비를 조회, 생성합니다.
 
@@ -152,6 +155,59 @@ export class MainResolver {
           }
         }
       )
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  @Authorized()
+  @Mutation(() => String, { nullable: true })
+  async write_to_card(
+    @Arg('data', { nullable: false }) data: InputWriteCard,
+    @Ctx() ctx: Context
+  ) {
+    try {
+      const user_idx = ctx.user.user_idx;
+
+      if(!user_idx){
+        throw "회원가입을 해주세요!"
+      }
+
+      const card_send_code = Math.random().toString(36).slice(2); 
+
+      // data.card_idx = ca;
+      data.card_idx = Number(data.card_idx);
+      data.user_idx = Number(user_idx);
+      data.card_send_code = card_send_code;
+
+      console.log("data ==> ", data)
+
+      await WriteCard.insert(data);
+
+      return card_send_code;
+
+    } catch (e) {
+       throw "문제가 발생하였습니다."
+    }
+  }
+
+
+  @Query(() => MailboxReturn)
+  async select_write_card(
+    @Arg('card_send_code', { nullable: false }) card_send_code: string,
+  ){
+    try{
+      const entityManager = getManager();
+      const someQuery = await entityManager.query(`
+        select u.user_name, c.card_img_url, card_title, wc.card_contents, wc.card_font from blue_mailbox.write_card wc
+        left join card c
+        on wc.card_idx = c.card_idx 
+        left join user u
+        on wc.user_idx = u.user_idx
+        where wc.card_send_code = '${card_send_code}'; 
+      `)
+
+      return someQuery[0];
     }catch(err){
       console.log(err)
     }
