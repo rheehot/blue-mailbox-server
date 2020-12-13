@@ -68,6 +68,8 @@ async function main() {
         };
         return context;
       }, 
+      introspection: true,
+      playground: true
      }); // 아폴로 서버
     console.log(process.env.PORT)
     await server.listen({ port: process.env.PORT || 4000 }); // 서버 주소
