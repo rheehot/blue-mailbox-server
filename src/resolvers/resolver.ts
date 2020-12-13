@@ -4,7 +4,7 @@ import { getKakaoUserInfor, kakaoLogin, generateToken } from '../services/utils'
 import { Context } from 'vm';
 import { Card, HomeCardData, InputCard } from "../models/CardSchema";
 import { Like, Raw } from "typeorm";
-import { InputWriteCard, MailboxReturn, WriteCard } from "../models/WriteCardSchema";
+import { InputWriteCard, MailboxReturn, WriteCard, WriteCardReturn } from "../models/WriteCardSchema";
 import { getManager } from 'typeorm';
 
 // resolver는 직접적으로 스키마 파일을 불러와 데이터를 조작하는 파일입니다.
@@ -161,7 +161,7 @@ export class MainResolver {
   }
 
   @Authorized()
-  @Mutation(() => String, { nullable: true })
+  @Mutation(() => WriteCardReturn, { nullable: true })
   async write_to_card(
     @Arg('data', { nullable: false }) data: InputWriteCard,
     @Ctx() ctx: Context
@@ -184,7 +184,28 @@ export class MainResolver {
 
       await WriteCard.insert(data);
 
-      return card_send_code;
+      const find_card = await Card.findOne(
+        {
+          where: {
+            card_idx: data.card_idx
+          }
+        }
+      )
+
+      const find_user = await User.findOne(
+        {
+          where: {
+            user_idx: data.user_idx
+          }
+        }
+      )
+
+      return {
+        card_send_code,
+        card_title: find_card?.card_title,
+        card_img_url: find_card?.card_img_url,
+        user_name: find_user?.user_name
+      };
 
     } catch (e) {
        throw "문제가 발생하였습니다."

@@ -86,3 +86,19 @@ export class MailboxReturn{
     @Field({ nullable: true })
     card_font?: string;
 }
+
+
+@ObjectType() 
+export class WriteCardReturn{
+    @Field({ nullable: true })
+    card_send_code?: string;
+
+    @Field({ nullable: true })
+    card_img_url: string;
+
+    @Field({ nullable: true })
+    user_name: string;
+
+    @Field({ nullable: true })
+    card_title: string;
+}
