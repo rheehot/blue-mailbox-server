@@ -70,7 +70,7 @@ async function main() {
       }, 
      }); // 아폴로 서버
     console.log(process.env.PORT)
-    await server.listen(process.env.PORT || 3000); // 서버 주소
+    await server.listen({ port: process.env.PORT || 4000 }); // 서버 주소
     console.log("✅ Server has started!");
   }catch(err){
     console.log(err)
