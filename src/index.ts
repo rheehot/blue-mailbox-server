@@ -49,18 +49,24 @@ export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
 
 
 async function main() {
-
+  console.log("1")
   const _config:any = config // 디비 정보 불러오기
   await createConnection(_config);  // 디비 연결
 
+  console.log("2")
   getConnection();
   
+  console.log("3")
 
   try{
+
+  console.log("4")
     const schema = await buildSchema({ // 스키마 빌드
       resolvers: [MainResolver],
       authChecker: customAuthChecker 
     });
+
+  console.log("5")
     const server = new ApolloServer({ schema,
       context: ({ req }) => {
         const context = {
