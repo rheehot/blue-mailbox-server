@@ -51,6 +51,7 @@ export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
 async function main() {
   console.log("1")
   const _config:any = config // 디비 정보 불러오기
+  console.log(_config)
   await createConnection(_config);  // 디비 연결
 
   console.log("2")
