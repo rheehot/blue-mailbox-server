@@ -32,29 +32,29 @@ export class Card extends BaseEntity {
     @Column()
     @Field()
     card_main: boolean;
-    
-    @ManyToMany(type => WriteCard, cards => cards.card_idx)
-    cards: WriteCard[];
 
 }
 
 
 @InputType() // create, update, delete 하는 타입
 export class InputCard{
-    @Field()
+    @Field({ nullable: true })
     card_idx: number;
 
-    @Field()
+    @Field({ nullable: true })
     card_img_url: string;
 
-    @Field()
+    @Field({ nullable: true })
     card_keyword: string;
 
-    @Field()
+    @Field({ nullable: true })
     card_title: string;
 
-    @Field()
+    @Field({ nullable: true })
     card_describe: string;
+
+    @Field({ nullable: true })
+    card_main: boolean;
 }
 
 
