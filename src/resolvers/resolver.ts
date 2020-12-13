@@ -227,10 +227,9 @@ export class MainResolver {
   @Mutation(() => String, { nullable: true })
   async update_card(
     @Arg('data', { nullable: false }) data: InputCard,
-    @Ctx() ctx: Context
   ) {
     try {
-      
+
       const find: any = await Card.findOne(
         { card_idx: data.card_idx }
       )
@@ -241,6 +240,22 @@ export class MainResolver {
       }).catch((err: any) => {
         console.log(err)
       });
+
+      return '';
+
+    } catch (e) {
+
+       throw "문제가 발생하였습니다."
+    }
+  }
+
+  @Mutation(() => String, { nullable: true })
+  async create_card(
+    @Arg('data', { nullable: false }) data: InputCard,
+  ) {
+    try {
+      
+      await Card.insert(data)
 
       return '';
 
