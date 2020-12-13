@@ -68,7 +68,7 @@ async function main() {
         return context;
       },
      }); // 아폴로 서버
-    await server.listen(process.env.DB_NAME); // 서버 주소
+    await server.listen(process.env.port || 3000); // 서버 주소
     console.log("✅ Server has started!");
   }catch(err){
     console.log(err)
