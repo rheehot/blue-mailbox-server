@@ -8,7 +8,7 @@ export const config = {
   username: process.env.DB_USER!,
   password: process.env.DB_PASS!,
   database: process.env.DB_NAME!,
-  port: 3306,
+  port: 3306 || process.env.DB_PORT,
   entities: ["./src/models/*.ts"],
   logging: ["query", "error"]
 };
