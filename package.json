@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "forever start -v -c ts-node src/index.ts",
-    "dev": "nodemon -node src/index.ts",
+    "dev": "nodemon -w src --ext ts --exec ts-node src/index.ts",
     "build": "tsc"
   },
   "author": "Rahman Fadhil <rhmnfadhil@gmail.com> (https://rahmanfadhil.com/)",

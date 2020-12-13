@@ -92,7 +92,7 @@ export class MainResolver {
         {
           where: {
             card_main: false,
-            card_idx: Raw(card_idx =>`${card_idx} IN (13, 2, 51, 1)`)
+            card_idx: Raw(card_idx =>`${card_idx} IN (16, 2, 51, 1)`)
           },
           order: {
             card_idx: 'ASC'
@@ -104,7 +104,7 @@ export class MainResolver {
         {
           where: {
             card_main: false,
-            card_idx: Raw(card_idx =>`${card_idx} IN (21, 18, 20, 16)`)
+            card_idx: Raw(card_idx =>`${card_idx} IN (21, 18, 71, 19)`)
           },
           skip: 0,
           take: 4,
