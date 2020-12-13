@@ -6,6 +6,13 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "outDir": "./dist",
+    "include" : [
+      "src/**/*.ts"   /* Include every ts file in source folder */
+    ],
+    "exclude" : [
+        "node_modules"  /* exclude everything in  node_modules */
+    ]	
   }
 }
