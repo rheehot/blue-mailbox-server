@@ -67,5 +67,5 @@ export class HomeCardData{
     card_list_pop: [Card];
 
     @Field(type => [Card])
-    card_list_christmas: [Card];
+    card_list_christmas: [Card]; 
 }
