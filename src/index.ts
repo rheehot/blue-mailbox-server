@@ -8,7 +8,8 @@ import { getConnection } from "typeorm";
 import { config } from "./db/config";
 import { Token } from "./models/TokenSchema";
 import { User } from "./models/UserSchema";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 
 export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
   let headers = context.req.headers;
@@ -68,7 +69,8 @@ async function main() {
         return context;
       }, 
      }); // 아폴로 서버
-    await server.listen(process.env.port || 3000); // 서버 주소
+    console.log(process.env.PORT)
+    await server.listen(process.env.PORT || 3000); // 서버 주소
     console.log("✅ Server has started!");
   }catch(err){
     console.log(err)
