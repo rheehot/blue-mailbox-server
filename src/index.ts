@@ -10,6 +10,7 @@ import { Token } from "./models/TokenSchema";
 import { User } from "./models/UserSchema";
 import * as dotenv from "dotenv";
 dotenv.config();
+const cors = require('cors');
 
 export const customAuthChecker:AuthChecker<Context> = async ({ context }) => {
   let headers = context.req.headers;
@@ -79,6 +80,7 @@ async function main() {
       playground: false
      }); // 아폴로 서버
     console.log(process.env.PORT)
+    server.listen(cors());
     await server.listen({ port: process.env.PORT || 4000 }).catch( // handler 추가
       function (error) {
       console.log('catch handler', error);
