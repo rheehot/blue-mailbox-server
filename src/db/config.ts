@@ -10,4 +10,5 @@ export const config = {
   database: process.env.DB_NAME!,
   port: 3306,
   entities: ["./src/models/*.ts"],
+  logging: ["query", "error"]
 };

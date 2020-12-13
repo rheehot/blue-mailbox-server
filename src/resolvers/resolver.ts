@@ -3,7 +3,7 @@ import { User } from "../models/UserSchema";
 import { getKakaoUserInfor, kakaoLogin, generateToken } from '../services/utils'
 import { Context } from 'vm';
 import { Card, HomeCardData, InputCard } from "../models/CardSchema";
-import { Like } from "typeorm";
+import { Like, Raw } from "typeorm";
 import { InputWriteCard, MailboxReturn, WriteCard } from "../models/WriteCardSchema";
 import { getManager } from 'typeorm';
 
@@ -92,9 +92,8 @@ export class MainResolver {
         {
           where: {
             card_main: false,
+            card_idx: Raw(card_idx =>`${card_idx} IN (13, 2, 51, 1)`)
           },
-          skip: 0,
-          take: 4,
           order: {
             card_idx: 'ASC'
           }
@@ -105,6 +104,7 @@ export class MainResolver {
         {
           where: {
             card_main: false,
+            card_idx: Raw(card_idx =>`${card_idx} IN (21, 18, 20, 16)`)
           },
           skip: 0,
           take: 4,
