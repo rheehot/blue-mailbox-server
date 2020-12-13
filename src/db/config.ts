@@ -11,8 +11,4 @@ export const config = {
   port: 3306 || process.env.DB_PORT,
   entities: ["./src/models/*.ts"],
   logging: ["query", "error"],
-  connectionLimit : 1000,
-  connectTimeout  : 60 * 60 * 1000,
-  acquireTimeout  : 60 * 60 * 1000,
-  timeout         : 60 * 60 * 1000,
 };
