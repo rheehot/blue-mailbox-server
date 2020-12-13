@@ -213,4 +213,42 @@ export class MainResolver {
     }
   }
 
+
+  @Query(() => [Card])
+  async select_card_all(
+  ){
+    try{
+      return await Card.find();
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  @Mutation(() => String, { nullable: true })
+  async update_card(
+    @Arg('data', { nullable: false }) data: InputCard,
+    @Ctx() ctx: Context
+  ) {
+    try {
+      
+      const find: any = await Card.findOne(
+        { card_idx: data.card_idx }
+      )
+    
+      const result = await Card.save({
+        ...find, // existing fields
+        ...data // updated fields
+      }).catch((err: any) => {
+        console.log(err)
+      });
+
+      return '';
+
+    } catch (e) {
+
+       throw "문제가 발생하였습니다."
+    }
+  }
+
+
 }
