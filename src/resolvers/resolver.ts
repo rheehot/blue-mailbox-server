@@ -284,6 +284,39 @@ export class MainResolver {
 
        throw "문제가 발생하였습니다."
     }
+
+    
+  }
+
+
+  // 내가 쓴 카드 리스투
+
+  @Authorized()
+  @Query(() => [MailboxReturn])
+  async write_card_list(
+    @Ctx() ctx: Context
+  ){
+    try{
+
+      const user_idx = ctx.user.user_idx;
+      console.log(user_idx)
+
+      const entityManager = getManager();
+      const someQuery = await entityManager.query(`
+        select u.user_name, c.card_img_url, card_title, wc.card_contents, wc.card_font, wc.card_send_code, c.card_idx from blue_mailbox.write_card wc
+        left join card c
+        on wc.card_idx = c.card_idx 
+        left join user u
+        on wc.user_idx = u.user_idx
+        where u.user_idx = ${user_idx}; 
+      `)
+
+      console.log(someQuery)
+
+      return someQuery;
+    }catch(err){
+      console.log(err)
+    }
   }
 
 

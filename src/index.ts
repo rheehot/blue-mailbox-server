@@ -77,7 +77,7 @@ async function main() {
         return context;
       }, 
       introspection: true,
-      playground: false
+      playground: true
      }); // 아폴로 서버
     console.log(process.env.PORT)
     // server.listen(cors());
