@@ -113,11 +113,15 @@ export class MainResolver {
           }
         }
       )
+
+      const card_count =  await WriteCard.count();
+      console.log(card_count)
   
       return {
         main_img,
         card_list_pop,
-        card_list_christmas
+        card_list_christmas,
+        card_count
       }
     }catch(err){
       console.log(err)
@@ -290,7 +294,6 @@ export class MainResolver {
 
 
   // 내가 쓴 카드 리스투
-
   @Authorized()
   @Query(() => [MailboxReturn])
   async write_card_list(

@@ -68,4 +68,8 @@ export class HomeCardData{
 
     @Field(type => [Card])
     card_list_christmas: [Card]; 
+
+    @Field({ nullable: true })
+    card_count: number;
+
 }
