@@ -6,6 +6,7 @@ import { Card, HomeCardData, InputCard } from "../models/CardSchema";
 import { Like, Raw } from "typeorm";
 import { InputWriteCard, MailboxReturn, WriteCard, WriteCardReturn } from "../models/WriteCardSchema";
 import { getManager } from 'typeorm';
+import { InputRequest, Request } from "../models/RequestSchema";
 
 // resolver는 직접적으로 스키마 파일을 불러와 데이터를 조작하는 파일입니다.
 // find() 이런 문법을 통해서 스키마 디비를 조회, 생성합니다.
@@ -319,6 +320,23 @@ export class MainResolver {
       return someQuery;
     }catch(err){
       console.log(err)
+    }
+  }
+
+
+  @Mutation(() => String, { nullable: true })
+  async add_request(
+    @Arg('data', { nullable: false }) data: InputRequest,
+    @Ctx() ctx: Context
+  ) {
+    try {
+
+      await Request.insert(data);
+      
+      return '';
+
+    } catch (e) {
+       throw "문제가 발생하였습니다."
     }
   }
 
